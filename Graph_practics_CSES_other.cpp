@@ -82,9 +82,9 @@ int main(){
 }
 
 */
-//****SPOJ - BUGLIFE problem ********************
-//********method 1 DFS , method 2 union find , method3 BFS****
-//****based on Bipartite graph or 2 color **********
+****SPOJ - BUGLIFE problem ********************
+********method 1 DFS , method 2 union find , method3 BFS****
+****based on Bipartite graph or 2 color **********
 /*
 const int nax = 2005;
 std::vector<std::vector<int> > vv;
@@ -147,8 +147,8 @@ int main(){
 }
 */
 
-//******** Codeforces - (E. Tree Queries) ******
-//**Not able to solve , solve later*******
+******** Codeforces - (E. Tree Queries) ******
+**Not able to solve , solve later*******
 /*
 const int nax = 200005;
 std::vector<int> vv[nax];
@@ -304,7 +304,7 @@ int main(){
 
 
 //****************************************************
-//************* SPOJ - longest path Tree *************
+************* SPOJ - longest path Tree *************
 //****************************************************
 /*
 const int nax = 1e4+7;
@@ -354,7 +354,7 @@ int main(){
 	return 0;
 }
 */
-//*****size of sub Tree***************
+*****size of sub Tree***************
 /*
 const int nax = 1e4+7;
 std::vector<int> vv[nax];
@@ -403,7 +403,7 @@ int main(){
 */
 
 //****************************************************
-//************* SPOJ - Prime Path *************
+************* SPOJ - Prime Path *************
 //****************************************************
 /*
 const int nax= 1e5+7;
@@ -618,10 +618,10 @@ int main(){
 }
 */
 //*********************************************
-//************** BRIDGES *******************//
+************** BRIDGES *******************//
 ///********************************************
 
-//*******Q.Bertown-house(Codeforces)*****************
+*******Q.Bertown-house(Codeforces)*****************
 
 /*
 const int nax = 1e5+7;
