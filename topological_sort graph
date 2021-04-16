@@ -1,1 +1,27 @@
 
+
+vector<int>ans;
+void toposort(int n){
+	
+	queue<int > q;
+	for (int i = 0; i < n; ++i)
+	{
+		if(inc[i] == 0)q.push(i);
+	}
+
+	while (!q.empty())
+	{
+		int curr = q.top();
+		q.pop();
+		ans.push_back(curr);
+		for (auto x : vv[curr])
+		{
+			inc[x]--;
+			if(inc[x] == 0){
+				q.push(x);
+			}
+		}
+	}
+
+
+}
