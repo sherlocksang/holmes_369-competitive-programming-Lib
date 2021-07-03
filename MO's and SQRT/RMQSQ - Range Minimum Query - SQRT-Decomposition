@@ -1,0 +1,124 @@
+#include <bits/stdc++.h>
+ 
+#define ll long long
+#define PB push_back
+#define MP make_pair
+#define F first
+#define S second
+#define PI pair<int,int>
+ 
+#define REP(i, n) for(int i=0;i<(int)(n);++i)
+#define FOR(i,l,h) for(int i=(int)(l);i<=(int)(h);++i)
+#define FORD(i,h,l) for(int i=(int)(h);i>=(int)(l);--i)
+ 
+//#define max(a,b) a>b?a:b
+//#define min(a,b) a>b?b:a
+ 
+ll gcd(ll a, ll b) { return !b ? a : gcd(b, a % b); }
+ll lcm(ll a, ll b) { return (a / gcd(a, b)) * b; }
+ 
+#define dump(x)  cerr << #x << " = " << (x) << endl
+#define ALL(t) (t).begin(),(t).end()
+#define ALLR(t) (t).rbegin(),(t).rend()
+ 
+ 
+ 
+using namespace std;
+ 
+#define error(args...) { string _s = #args; replace(_s.begin(), _s.end(), ',', ' '); stringstream _ss(_s); istream_iterator<string> _it(_ss); err(_it, args); }
+ 
+void err(istream_iterator<string> it) {}
+template<typename T, typename... Args>
+void err(istream_iterator<string> it, T a, Args... args) {
+	cerr << *it << " = " << a << endl;
+	err(++it, args...);
+}
+ 
+int sum() { return 0; }
+ 
+template<typename T, typename... Args>
+T sum(T a, Args... args) { return a + sum(args...); }
+ 
+const int dx4[4] = {0, 0, 1, -1};
+const int dy4[4] = {-1, 1, 0, 0};
+const int dx8[8] = {-1, -1, -1, 0, 1, 1, 1, 0};
+const int dy8[8] = {-1, 0, 1, 1, 1, 0, -1, -1};
+ 
+#define MOD 1000000007
+///////////////////////////////////////
+ 
+ 
+ 
+//-----------------------------------------------
+//////////////////////////////////////////
+//---------DAY-8 , 20-06-21 ---------------
+ 
+void test_case(){
+ 
+	int n;cin>>n;
+	std::vector<int> v(n);
+	for (int i = 0; i < n; ++i)
+	{
+		cin>>v[i];
+	}
+ 
+	int sq = sqrt(n);
+ 
+ 
+	std::vector<int> arr(sq+1 , INT_MAX);
+	for (int i = 0; i < n; ++i)
+	{
+		int idx = i/sq;
+		arr[idx] = min(arr[idx] , v[i]);
+	}
+ 
+ 
+	int q;cin>>q;
+	while (q--)
+	{
+		int l , r;cin>>l>>r; // 1 , 10 , sq = 3
+ 
+		int left = l/sq; // 0
+		int right = r/sq; // 3
+		int ans = INT_MAX;
+		if(left == right){
+			//cout<<arr[left]<<"\n";
+			for (int i = l; i <= r; ++i)
+			{
+				ans = min(ans , v[i]);
+			}
+			cout<<ans<<"\n";
+		}
+		else{
+ 
+			for (int i = l; i < (left+1)*sq; ++i)
+			{
+				ans = min(ans, v[i]);
+			}
+			for (int i = (left+1); i < (right); ++i)
+			{
+				ans = min(ans, arr[i]);
+			}
+			for (int i = (right)*sq; i <= r; ++i)
+			{
+				ans = min(ans, v[i]);
+			}
+ 
+			cout<<ans<<"\n";
+		}
+ 
+	}
+}
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+	cout.tie(NULL);
+	//init();
+	int t=1;//;cin>>t;
+	while (t--)
+	{
+		test_case();
+	}
+	return 0;
+}
+ 
