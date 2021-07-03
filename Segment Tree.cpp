@@ -1,0 +1,87 @@
+
+//********************sum from index l ,r here l inclusive and r exclusive means [l , r) 
+struct segtree
+{
+	ll sz ;
+
+
+
+	std::vector<ll> sums;
+
+	void init(int n){
+		sz = 1;
+		while (sz < n)
+		{
+			sz *= 2;
+		}
+
+		sums.assign(2*sz , 0LL);
+	}
+	void set_recc(int i , int v , int x , int lx ,int rx){
+
+		if((rx - lx) == 1){
+			sums[x] = v;
+			return;
+		}
+
+		int m = (lx + rx)/2;
+		if(i < m) set_recc(i , v , 2*x + 1 , lx , m);
+		else set_recc(i , v , 2*x + 2 , m , rx);
+
+		sums[x] = sums[2*x + 1] + sums[2*x + 2];
+	}
+	void setValue(int  i , int v){
+		return set_recc(i , v , 0 , 0 , sz);
+	}
+
+	ll sum_recc(int l , int r , int x , int lx ,int rx){
+		if(l >= rx || lx >= r){
+			return 0;
+		}
+
+		if(lx >= l && rx <= r){
+			return sums[x];
+		}
+
+		int m = (lx+rx)/2;
+
+		ll s1 = sum_recc(l , r , 2*x+1 , lx , m);
+		ll s2 = sum_recc(l , r , 2*x+2 , m , rx);
+
+		return s1+s2;
+	}
+	ll sumlr(int l , int r){
+		return sum_recc(l , r , 0 , 0 , sz);
+	}
+
+};
+
+void test_case(){
+	int n,m;
+	std::cin >>n>>m;
+
+	segtree seg;
+
+	seg.init(n);
+	for (int i = 0; i < n; ++i)
+	{
+		int a;
+		cin>>a;
+		seg.setValue(i , a);
+	}
+	while (m--)
+	{
+		int num ;
+		cin>>num;
+		if(num == 1){
+			int i,v;cin>>i>>v;
+			seg.setValue(i , v);
+		}
+		else{
+			int l,r;cin>>l>>r;
+			cout<<seg.sumlr(l,r)<<"\n";
+		}
+	}
+}
+
+////////*********************************************
