@@ -1,0 +1,137 @@
+
+
+
+//-----------------------------------------------
+//////////////codeforce EDU  part 1 » Step 1 » Practice ////////////////
+//****************|C. Number of Minimums on a Segment|******************
+//---------DAY-16 , 03-07-21 -------------------------------------------
+
+#define INF 1e18
+
+struct item
+{
+	int m,c;
+};
+struct segtree
+{
+	ll sz ;
+
+
+
+	std::vector<item> arr;
+
+	item NEUTRAL_ELEMENT = {INT_MAX , 0};
+	void init(int n){
+		sz = 1;
+		while (sz < n)
+		{
+			sz *= 2;
+		}
+
+		arr.assign(2*sz , NEUTRAL_ELEMENT);
+	}
+
+	item single(int val){
+		return {val , 1};
+	}
+	item merge(item a , item b){
+		if(a.m < b.m) return a;
+		if(a.m > b.m) return b;
+
+		return {a.m , a.c+b.c};
+	}
+
+	void build_recc(vector<ll> &v , int x , int lx ,int rx){
+		if(rx - lx == 1){
+			if(lx < (int)v.size()){
+
+				// here x because x is index in sum whose range is 0  to  sz , where
+				// lx , rx is range between 0,n
+				arr[x] = single(v[lx]);
+				//error(lx ,x);
+			}
+			return;
+		}
+		int m  = (lx+rx)/2;
+		build_recc(v , 2*x+1 , lx , m);
+		build_recc(v , 2*x+2 , m , rx);
+
+		arr[x] = merge(arr[2*x + 1] , arr[2*x + 2]);
+
+	}
+	void build(vector<ll> &v){
+		return build_recc(v , 0 , 0 , sz);
+	}
+	void set_recc(int i , int v , int x , int lx ,int rx){
+
+		if((rx - lx) == 1){
+			arr[x] = single(v);
+			return;
+		}
+
+		int m = (lx + rx)/2;
+		if(i < m) set_recc(i , v , 2*x + 1 , lx , m);
+		else set_recc(i , v , 2*x + 2 , m , rx);
+
+		arr[x] = merge(arr[2*x + 1] , arr[2*x + 2]);
+	}
+	void setValue(int  i , int v){
+		return set_recc(i , v , 0 , 0 , sz);
+	}
+
+	item minlr_recc(int l , int r , int x , int lx ,int rx){
+		if(l >= rx || lx >= r){
+			return NEUTRAL_ELEMENT;
+		}
+
+		if(lx >= l && rx <= r){
+			return arr[x];
+		}
+
+		int m = (lx+rx)/2;
+
+		item s1 = minlr_recc(l , r , 2*x+1 , lx , m);
+		item s2 = minlr_recc(l , r , 2*x+2 , m , rx);
+
+		return merge(s1,s2);
+	}
+	item minlr(int l , int r){
+		return minlr_recc(l , r , 0 , 0 , sz);
+	}
+
+};
+
+void test_case(){
+	int n,m;
+	std::cin >>n>>m;
+
+	segtree seg;
+
+	seg.init(n);
+
+	std::vector<ll> v(n);
+	for (int i = 0; i < n; ++i)
+	{
+		cin>>v[i];
+	}
+	/// call  build to crate segment tree in O(n) time with initial Value
+	seg.build(v);
+
+	while (m--)
+	{
+		int num ;
+		cin>>num;
+		if(num == 1){
+			int i,v;cin>>i>>v;
+			seg.setValue(i , v);
+		}
+		else{
+			int l,r;cin>>l>>r;
+
+			item ans = seg.minlr(l,r);
+			cout<<ans.m <<" "<<ans.c<<"\n";
+		}
+	}
+}
+
+
