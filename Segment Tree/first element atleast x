@@ -1,0 +1,146 @@
+/* problem : find the first element which is greater than equal to val in array and index greater than idx
+             v[i] >= val && i >= idx
+             
+   similar problem find the first element which is grater than that element in right side
+ */
+
+///////////////////////////////////
+
+
+typedef int item;
+
+
+struct segtree
+{
+	ll  sz ;
+	std::vector<item> arr;
+
+
+	item NEUTRAL_ELEMENT = 0;
+	void init(int n){
+		sz = 1;
+		while (sz < n)
+		{
+			sz *= 2;
+		}
+
+		arr.assign(2*sz  , NEUTRAL_ELEMENT);
+	}
+	item single(int val){
+		return val;
+		//because we want max seg max suf max pref
+	}
+
+	item merge(item a , item b){
+
+		return max(a,b);
+
+	}
+
+	void build_recc(std::vector<ll>& v , int x , int lx , int rx ){
+		if(rx - lx == 1){
+			if(lx < (int)v.size()){
+				arr[x]  = single(v[lx]);
+			}
+			return ;
+		}
+
+		int m = (lx  + rx)/2;
+
+		build_recc(v , 2*x+1 , lx , m);
+		build_recc(v , 2*x+2 , m , rx);
+
+		arr[x] = merge(arr[2*x + 1] , arr[2*x + 2]);
+	}
+	void build(std::vector<ll>& v){
+		build_recc(v , 0 , 0 , sz);
+	}
+	void set_recc(int i , int val , int x,int lx,int rx){
+		if(rx - lx == 1){
+			arr[x] = single(val);
+			return ;
+		}
+
+		int m = (lx+rx)/2;
+
+		if(i < m)set_recc( i , val, 2*x+1, lx , m);
+		else set_recc( i , val, 2*x+2, m , rx);
+
+		arr[x] = merge(arr[2*x+1], arr[2*x+2]);
+	}
+	void setValue(int i , int val){
+		set_recc(i , val , 0 , 0 ,sz);
+	}
+
+
+	item find(int val, int i, int x,int lx,int rx){
+		if(arr[x] < val) return -1;
+		if(rx-lx == 1){
+			if(arr[x] >= val && lx >= i)return lx;
+			else return -1;
+		}
+
+		int m = (lx+rx)/2;
+
+		int getin = -1;
+
+		// first go left side if we do not find
+		// gettin value will be -1 so then go right
+		if(val <= arr[2*x+1] && i<m){
+			 getin = find(val,i , 2*x+1 , lx , m);
+		}
+
+		if(getin == -1)getin =  find(val,i , 2*x+2 , m , rx);
+
+		return getin;
+	}
+
+
+	item find(int val,int i){
+		return find(val, i , 0 , 0 ,sz);
+	}
+};
+
+void test_case(){
+	int n,q;cin>>n>>q;
+	std::vector<ll> v(n);
+
+	for (int i = 0; i < n; ++i)
+	{
+		cin>>v[i];
+	}
+
+	segtree st;
+	st.init(n);
+
+	st.build(v);
+
+	while (q--)
+	{
+		int op;cin>>op;
+		if(op == 1){
+			int idx,val;cin>>idx>>val;
+
+			st.setValue(idx , val);
+		}
+		else{
+			int k,i;cin>>k>>i;
+
+			cout<<st.find(k,i)<<"\n";
+		}
+	}
+
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+	cout.tie(NULL);
+
+	int t=1;//;cin>>t;
+	while (t--)
+	{
+		test_case();
+	}
+	return 0;
+}
