@@ -9,7 +9,7 @@ struct segtree
  
 	void init(int n){
 		sz = 1;
-		while (sz < n)
+		while (sz < n)    // if index is 1 based change (sz < n)  to (sz <= n)
 		{
 			sz *= 2;
 		}
